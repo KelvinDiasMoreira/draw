@@ -52,6 +52,81 @@ document.addEventListener("click", (event) => {
   render();
 });
 
+document.addEventListener("mousemove", (ev) => {
+  for (let i = 0; i < rects.length; i++) {
+    for (let j = 0; j < objectMarked.length; j++) {
+      if (objectMarked[j].id === rects[i].id) {
+        const centerX = rects[i].xPos + rects[i].width / 2;
+        const centerY = rects[i].yPos + rects[i].height / 2;
+
+        const centerWidth = rects[i].width * 0.1;
+        const centerHeight = rects[i].height * 0.1;
+
+        const centerStartX = centerX - centerWidth / 2;
+        const centerEndX = centerX + centerWidth / 2;
+        const centerStartY = centerY - centerHeight / 2;
+        const centerEndY = centerY + centerHeight / 2;
+
+        const isInCenterX =
+          ev.clientX - 5 >= centerStartX && ev.clientX - 5 <= centerEndX;
+        const isInCenterY =
+          ev.clientY - 5 >= centerStartY && ev.clientY - 5 <= centerEndY;
+
+        const rightEdgeStartX = rects[i].xPos + rects[i].width * 0.9;
+        const rightEdgeEndX = rects[i].xPos + rects[i].width;
+        const isNearRightEdgeX =
+          ev.clientX - 5 >= rightEdgeStartX && ev.clientX - 5 <= rightEdgeEndX;
+
+        const leftEdgeStartX = rects[i].xPos;
+        const leftEdgeEndX = rects[i].xPos + rects[i].width * 0.1;
+        const isNearLeftEdgeX =
+          ev.clientX - 5 >= leftEdgeStartX && ev.clientX - 5 <= leftEdgeEndX;
+
+        const topEdgeStartY = rects[i].yPos;
+        const topEdgeEndY = rects[i].yPos + rects[i].height * 0.1;
+        const isNearTopEdge =
+          ev.clientY - 5 >= topEdgeStartY && ev.clientY - 5 <= topEdgeEndY;
+
+        const bottomEdgeStartY = rects[i].yPos + rects[i].height * 0.9;
+        const bottomEdgeEndY = rects[i].yPos + rects[i].height;
+        const isNearBottomEdgeY =
+          ev.clientY - 5 >= bottomEdgeStartY &&
+          ev.clientY - 5 <= bottomEdgeEndY;
+
+        const isInObjectY =
+          ev.clientY - 5 >= rects[i].yPos &&
+          ev.clientY - 5 <= rects[i].yPos + rects[i].height;
+
+        const isInObjectX =
+          ev.clientX - 5 >= rects[i].xPos &&
+          ev.clientX - 5 <= rects[i].xPos + rects[i].width;
+
+        if (isNearTopEdge && isInObjectY && isInObjectX) {
+          console.log("Mouse está na parte de cima");
+          document.addEventListener("mousedown", (eventUpRect) => {
+            console.log(eventUpRect);
+          });
+        }
+
+        if (isNearLeftEdgeX && isInObjectY && isInObjectX) {
+          console.log("Mouse está no lado esquerdo");
+        }
+
+        if (isInCenterX && isInCenterY && isInObjectX) {
+          console.log("Mouse está no meio");
+        }
+
+        if (isNearRightEdgeX && isInObjectY && isInObjectX) {
+          console.log("Mouse está no lado direito");
+        }
+        if (isNearBottomEdgeY && isInObjectY && isInObjectX) {
+          console.log("Mouse está na parte de baixo");
+        }
+      }
+    }
+  }
+});
+
 const render = () => {
   ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
 
